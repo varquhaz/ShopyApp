@@ -1,10 +1,16 @@
 package com.varqulabs.shopyapp.presentation.home.components
 
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.Shapes
 import androidx.compose.material3.Text
@@ -23,14 +29,15 @@ fun ProductCardItem(
 ) {
     Card(
         modifier = Modifier
-            .clip(Shapes().extraLarge)
+            .clip(Shapes().large)
             .clickable {
                 onClick()
             }
 
     ){
         Column(
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
+            modifier = Modifier.fillMaxWidth()
+                .height(200.dp),
         ){
             AsyncImage(
                 model = "https://avatars.githubusercontent.com/u/135390925?s=400&u=25a16b20d00273658ebd7a917ed8d1ae1ef67ba1&v=4",
@@ -38,12 +45,14 @@ fun ProductCardItem(
                 error = painterResource(id = R.drawable.ic_launcher_foreground),
                 placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
                 modifier = Modifier
-                    .clip(Shapes().extraLarge)
-                    .size(64.dp)
-                    .align(Alignment.CenterHorizontally),
+                    .padding(horizontal = 12.dp, vertical = 12.dp)
+                    .clip(Shapes().medium)
+                    .align(Alignment.CenterHorizontally)
+                    .weight(0.8f),
             )
             Text(
-                "Product name"
+                "Product name",
+                modifier = Modifier.weight(0.2f).padding(horizontal = 14.dp)
             )
         }
     }

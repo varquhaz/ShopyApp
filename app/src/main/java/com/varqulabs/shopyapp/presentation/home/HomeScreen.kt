@@ -32,7 +32,7 @@ fun HomeScreen(
             horizontalArrangement = Arrangement.spacedBy(12.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ){
-            items(6){
+            items(12){
                 ProductCardItem {
                     onItemClick()
                 }
