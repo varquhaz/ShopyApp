@@ -14,7 +14,10 @@ import androidx.navigation.compose.rememberNavController
 import com.varqulabs.shopyapp.navigation.Screen
 import com.varqulabs.shopyapp.navigation.SetupNavGraph
 import com.varqulabs.shopyapp.ui.theme.ShopyAppTheme
+import dagger.hilt.android.AndroidEntryPoint
+import dagger.hilt.android.HiltAndroidApp
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

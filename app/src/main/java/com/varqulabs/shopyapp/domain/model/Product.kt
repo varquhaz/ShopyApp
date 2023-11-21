@@ -1,0 +1,13 @@
+package com.varqulabs.shopyapp.domain.model
+
+data class Product(
+    val id: Int,
+    val name: String,
+    val description: String,
+    val category: String,
+    val price: Double,
+    val ratingScore: Double,
+    val ratingCount: Int,
+    val imageUrl: String
+
+)
