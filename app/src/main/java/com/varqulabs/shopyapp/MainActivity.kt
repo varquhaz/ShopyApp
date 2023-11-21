@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.varqulabs.shopyapp.navigation.Screen
+import com.varqulabs.shopyapp.navigation.SetupNavGraph
 import com.varqulabs.shopyapp.ui.theme.ShopyAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -22,7 +25,11 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Shopy App")
+                    val navController = rememberNavController()
+                    SetupNavGraph(
+                        navHostController = navController,
+                        startDestination =  Screen.Home
+                    )
                 }
             }
         }
