@@ -19,8 +19,8 @@ fun SetupNavGraph(
         startDestination = startDestination.route
     ) {
         homeRoute(
-            onItemClick = {
-                navHostController.navigate(Screen.Detail.route)
+            onItemClick = { idProduct ->
+                navHostController.navigate(Screen.Detail.passProductId(idProduct))
             }
         )
         detailRoute(
@@ -33,7 +33,7 @@ fun SetupNavGraph(
 }
 
 fun NavGraphBuilder.homeRoute(
-    onItemClick: () -> Unit
+    onItemClick: (String) -> Unit
 ){
     composable(route = Screen.Home.route){
         HomeScreen(

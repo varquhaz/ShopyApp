@@ -5,7 +5,7 @@ import com.varqulabs.shopyapp.domain.model.Product
 
 fun StoreProductDto.toDomain(): Product {
     return Product(
-        id = this.id,
+        id = this.id.toString(),
         name = this.title,
         description = this.description,
         category = this.category,

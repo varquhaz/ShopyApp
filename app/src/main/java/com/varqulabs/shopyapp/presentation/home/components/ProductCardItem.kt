@@ -1,9 +1,12 @@
 package com.varqulabs.shopyapp.presentation.home.components
 
+import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,9 +23,25 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.capitalize
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.toUpperCase
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.varqulabs.shopyapp.R
 import com.varqulabs.shopyapp.domain.model.Product
@@ -30,21 +49,18 @@ import com.varqulabs.shopyapp.domain.model.Product
 @Composable
 fun ProductCardItem(
     product: Product,
-    onClick: () -> Unit
+    onClick: (String) -> Unit
 ) {
-    Card(
-        modifier = Modifier
-            .clip(Shapes().large)
-            .clickable {
-                onClick()
-            },
-        elevation = CardDefaults.cardElevation(12.dp)
 
-    ){
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(200.dp).background(Color.White),
+                .height(260.dp)
+                .clickable {
+                    onClick(product.id)
+                }
+                .padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.Center
         ){
             AsyncImage(
                 model = product.imageUrl,
@@ -52,27 +68,154 @@ fun ProductCardItem(
                 error = painterResource(id = R.drawable.ic_launcher_foreground),
                 placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
                 modifier = Modifier
-                    .padding(horizontal = 12.dp, vertical = 12.dp)
-                    .clip(Shapes().medium)
+                    .padding(vertical = 24.dp)
+                    .size(110.dp)
                     .align(Alignment.CenterHorizontally)
-                    .weight(0.75f),
+
             )
             Column(
                 modifier = Modifier
-                    .weight(0.25f)
-                    .padding(horizontal = 14.dp)
             ){
                 Text(
                     text = product.name,
-                    modifier = Modifier.weight(0.125f)
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.ExtraBold,
+                    modifier = Modifier,
+                    maxLines = 1,
+                    overflow = TextOverflow.Clip
                 )
+                Row(){
+                    Spacer(modifier = Modifier.width(1.dp))
+                    Text(
+                        text = "${product.description}",
+                        fontSize = 11.sp,
+                        color = Color.DarkGray,
+                        fontWeight = FontWeight.W300,
+                        modifier = Modifier,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
+                    )
+                }
                 Text(
-                    text = "${product.price}",
-                    modifier = Modifier.weight(0.125f)
+                    text = "$${product.price}",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Black,
+                    modifier = Modifier.padding(vertical = 4.dp),
+                    maxLines = 1,
+                    overflow = TextOverflow.Clip,
+
+                )
+                RatingBar(
+                    rating = product.ratingScore.toFloat(),
+                    modifier = Modifier
                 )
             }
-
         }
+}
+
+// RatingBar Source code:
+//https://stackoverflow.com/questions/73948960/jetpack-compose-how-to-create-a-rating-bar
+@Composable
+private fun RatingBar(
+    modifier: Modifier = Modifier,
+    rating: Float,
+    spaceBetween: Dp = 0.dp
+) {
+
+    val image = ImageBitmap.imageResource(id = R.drawable.star_outline1)
+    val imageFull = ImageBitmap.imageResource(id = R.drawable.star1)
+
+    val totalCount = 5
+
+    val height = LocalDensity.current.run { image.height.toDp() }
+    val width = LocalDensity.current.run { image.width.toDp() }
+    val space = LocalDensity.current.run { spaceBetween.toPx() }
+    val totalWidth = width * totalCount + spaceBetween * (totalCount - 1)
+
+
+    Box(
+        modifier
+            .width(totalWidth)
+            .height(height)
+            .drawBehind {
+                drawRating(rating, image, imageFull, space)
+            })
+}
+
+private fun DrawScope.drawRating(
+    rating: Float,
+    image: ImageBitmap,
+    imageFull: ImageBitmap,
+    space: Float
+) {
+
+    val totalCount = 5
+
+    val imageWidth = image.width.toFloat()
+    val imageHeight = size.height
+
+    val reminder = rating - rating.toInt()
+    val ratingInt = (rating - reminder).toInt()
+
+    for (i in 0 until totalCount) {
+
+        val start = imageWidth * i + space * i
+
+        drawImage(
+            image = image,
+            topLeft = Offset(start, 0f)
+        )
     }
 
+    drawWithLayer {
+        for (i in 0 until totalCount) {
+            val start = imageWidth * i + space * i
+            // Destination
+            drawImage(
+                image = imageFull,
+                topLeft = Offset(start, 0f)
+            )
+        }
+
+        val end = imageWidth * totalCount + space * (totalCount - 1)
+        val start = rating * imageWidth + ratingInt * space
+        val size = end - start
+
+        // Source
+        drawRect(
+            Color.Transparent,
+            topLeft = Offset(start, 0f),
+            size = Size(size, height = imageHeight),
+            blendMode = BlendMode.SrcIn
+        )
+    }
+}
+
+private fun DrawScope.drawWithLayer(block: DrawScope.() -> Unit) {
+    with(drawContext.canvas.nativeCanvas) {
+        val checkPoint = saveLayer(null, null)
+        block()
+        restoreToCount(checkPoint)
+    }
+}
+
+@Preview
+@Composable
+fun ProductPreview(
+
+) {
+    ProductCardItem(product = Product(
+        id = "1",
+        name = "Jacket",
+        description = "A simple Jacket",
+        price = 24.99,
+        category = "Clothes",
+        ratingScore = 4.5,
+        ratingCount = 12,
+        imageUrl = "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg"
+    ), onClick = {
+
+    }
+
+    )
 }
