@@ -1,5 +1,6 @@
 package com.varqulabs.shopyapp.presentation.home.components
 
+
 import android.widget.Space
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.varqulabs.shopyapp.R
+import com.varqulabs.shopyapp.core.presentation.components.RatingBar
 import com.varqulabs.shopyapp.domain.model.Product
 
 @Composable
@@ -113,91 +115,7 @@ fun ProductCardItem(
         }
 }
 
-// RatingBar Source code:
-//https://stackoverflow.com/questions/73948960/jetpack-compose-how-to-create-a-rating-bar
-@Composable
-private fun RatingBar(
-    modifier: Modifier = Modifier,
-    rating: Float,
-    spaceBetween: Dp = 0.dp
-) {
 
-    val image = ImageBitmap.imageResource(id = R.drawable.star_outline1)
-    val imageFull = ImageBitmap.imageResource(id = R.drawable.star1)
-
-    val totalCount = 5
-
-    val height = LocalDensity.current.run { image.height.toDp() }
-    val width = LocalDensity.current.run { image.width.toDp() }
-    val space = LocalDensity.current.run { spaceBetween.toPx() }
-    val totalWidth = width * totalCount + spaceBetween * (totalCount - 1)
-
-
-    Box(
-        modifier
-            .width(totalWidth)
-            .height(height)
-            .drawBehind {
-                drawRating(rating, image, imageFull, space)
-            })
-}
-
-private fun DrawScope.drawRating(
-    rating: Float,
-    image: ImageBitmap,
-    imageFull: ImageBitmap,
-    space: Float
-) {
-
-    val totalCount = 5
-
-    val imageWidth = image.width.toFloat()
-    val imageHeight = size.height
-
-    val reminder = rating - rating.toInt()
-    val ratingInt = (rating - reminder).toInt()
-
-    for (i in 0 until totalCount) {
-
-        val start = imageWidth * i + space * i
-
-        drawImage(
-            image = image,
-            topLeft = Offset(start, 0f)
-        )
-    }
-
-    drawWithLayer {
-        for (i in 0 until totalCount) {
-            val start = imageWidth * i + space * i
-            // Destination
-            drawImage(
-                image = imageFull,
-                topLeft = Offset(start, 0f)
-            )
-        }
-
-        val end = imageWidth * totalCount + space * (totalCount - 1)
-        val start = rating * imageWidth + ratingInt * space
-        val size = end - start
-
-        // Source
-        drawRect(
-            Color.Transparent,
-            topLeft = Offset(start, 0f),
-            size = Size(size, height = imageHeight),
-            blendMode = BlendMode.SrcIn
-        )
-    }
-}
-
-private fun DrawScope.drawWithLayer(block: DrawScope.() -> Unit) {
-    with(drawContext.canvas.nativeCanvas) {
-        val checkPoint = saveLayer(null, null)
-        block()
-        restoreToCount(checkPoint)
-    }
-}
 
 @Preview
 @Composable

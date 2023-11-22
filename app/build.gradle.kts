@@ -93,4 +93,7 @@ dependencies {
     // Compose Navigation
     implementation ("androidx.navigation:navigation-compose:2.7.3")
 
+    //Accompanist systemUIColors
+    implementation ("com.google.accompanist:accompanist-systemuicontroller:0.33.2-alpha")
+
 }

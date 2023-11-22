@@ -16,18 +16,44 @@ class HomeRepositoryImpl(
 ) : HomeRepository {
     override fun getAllProducts(): Flow<Result<List<Product>>> {
         return flow {
-                try {
-                    val result = api.getAllProducts()
-                    val resultMapped = result.map { it.toDomain() }
-                    emit(Result.success(resultMapped))
-                }catch (e: Exception){
-                    emit(Result.failure(e))
-                }
+            try {
+                val result = api.getAllProducts()
+                val resultMapped = result.map { it.toDomain() }
+                emit(Result.success(resultMapped))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
+            }
         }.onStart {
             emit(Result.success(emptyList()))
         }
 
 
+    }
 
+    override fun getProductDetail(id: Int): Flow<Result<Product>> {
+        return flow {
+            try {
+                val result = api.getProductDetail(id)
+                val resultMapped = result.toDomain()
+                emit(Result.success(resultMapped))
+            } catch (e: Exception) {
+                emit(Result.failure(e))
+            }
+        }.onStart {
+            emit(
+                Result.success(
+                    Product(
+                        "404",
+                        "No name",
+                        "No description",
+                        "404",
+                        price = 404.0,
+                        ratingCount = 404,
+                        ratingScore = 4.04,
+                        imageUrl = ""
+                    )
+                )
+            )
+        }
     }
 }

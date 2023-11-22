@@ -3,6 +3,8 @@ package com.varqulabs.shopyapp.di
 import com.varqulabs.shopyapp.data.remote.FakeStoreApi
 import com.varqulabs.shopyapp.data.remote.util.Constants
 import com.varqulabs.shopyapp.data.repository.HomeRepositoryImpl
+import com.varqulabs.shopyapp.domain.detail.DetailUseCases
+import com.varqulabs.shopyapp.domain.detail.usecases.GetProductDetailUseCase
 import com.varqulabs.shopyapp.domain.home.HomeUseCases
 import com.varqulabs.shopyapp.domain.home.usecases.GetAllProductsUseCase
 import com.varqulabs.shopyapp.domain.repository.HomeRepository
@@ -37,6 +39,18 @@ object HomeModule {
             getAllProductsUseCase = GetAllProductsUseCase(repository)
         )
     }
+
+    //Detail Use Cases
+    @Singleton
+    @Provides
+    fun provideDetailUseCases(
+        repository: HomeRepository
+    ): DetailUseCases{
+        return DetailUseCases(
+            getProductDetailUseCase = GetProductDetailUseCase(repository)
+        )
+    }
+
 
     // Provide Home Repository
     @Singleton

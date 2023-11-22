@@ -8,4 +8,6 @@ interface HomeRepository {
 
     fun getAllProducts() : Flow<Result<List<Product>>>
 
+    fun getProductDetail(id: Int): Flow<Result<Product>>
+
 }
