@@ -12,4 +12,8 @@ interface HomeRepository {
 
     suspend fun insertProducts(products: List<Product>)
 
+    fun getAllProductsAlpha(): Flow<List<Product>>
+
+    fun getProductDetailAlpha(id: String): Flow<Product>
+
 }

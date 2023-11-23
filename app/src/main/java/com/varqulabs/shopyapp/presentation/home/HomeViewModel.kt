@@ -23,7 +23,7 @@ class HomeViewModel @Inject constructor(
         private set
 
     init{
-        getAllProducts()
+        getAllProductsAlpha()
     }
 
     fun getAllProducts(){
@@ -41,6 +41,19 @@ class HomeViewModel @Inject constructor(
                 }
             }
             state = state.copy(isLoading = false)
+        }
+    }
+
+    fun getAllProductsAlpha(){
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            homeUseCases.getAllProductsAlpha().collectLatest {
+                state = state.copy(
+                    products = it
+                )
+                state = state.copy(isLoading = false)
+            }
+
         }
     }
 

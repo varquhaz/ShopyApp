@@ -3,6 +3,7 @@ package com.varqulabs.shopyapp.presentation.detail
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,7 +16,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingCart
+import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -29,11 +32,15 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -43,6 +50,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.varqulabs.shopyapp.R
+import com.varqulabs.shopyapp.core.presentation.util.shareLink
 import com.varqulabs.shopyapp.domain.model.Product
 import com.varqulabs.shopyapp.presentation.detail.components.BottomSelectorDetail
 import java.text.NumberFormat
@@ -55,7 +63,9 @@ fun DetailScreen(
     viewModel: DetailViewModel = hiltViewModel()
 ) {
 
-    val state = viewModel.state
+    val state by viewModel.state.collectAsState()
+
+    val context = LocalContext.current
 
     val numberFormat = NumberFormat.getInstance()
     numberFormat.maximumFractionDigits = 2
@@ -116,7 +126,13 @@ fun DetailScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = {
+                          if(state.product != null){
+                              context.shareLink(
+                                  "Estoy interesado en: \n ${state.product!!.name} \n ${state.product!!.imageUrl}"
+                              )
+                          }
+                },
                 shape = Shapes().large,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
@@ -138,19 +154,34 @@ fun DetailScreen(
                     .fillMaxWidth()
                     .height(360.dp)
             )*/
-            AsyncImage(
-                model = state.product?.imageUrl,
-                contentDescription = "Product Image",
-                error = painterResource(id = R.drawable.ic_launcher_foreground),
-                placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .size(360.dp)
-                    .padding(vertical = 40.dp, horizontal = 24.dp)
-            )
+            if(state.isLoading == true){
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
+                ){
+                    CircularProgressIndicator()
+                }
+            } else {
+                if(state.product?.imageUrl == null){
+                    Button(onClick = {
+                        viewModel.getProductDetailAlpha()
+                    }) {
+                        Text("Reload")
+                    }
+                }
+                AsyncImage(
+                    model = state.product?.imageUrl,
+                    contentDescription = "Product Image",
+                    error = painterResource(id = R.drawable.ic_launcher_foreground),
+                    placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .size(360.dp)
+                        .padding(vertical = 40.dp, horizontal = 24.dp)
+                )
+            }
             BottomSelectorDetail(
-                product = if(state.product != null) state.product else
-                    Product(
+                product = state.product ?: Product(
                     id = "1",
                     name = "Jacket",
                     description = "A simple Jacket",
@@ -174,7 +205,12 @@ fun DetailScreen(
                     shape = Shapes().small
                 ) {
                     Text(
-                        text = "Price: $${numberFormat.format(state.product?.price)}"
+                        text = if(state.product == null) {
+                            "Price Null"
+                        }else {
+                            "Price: $${numberFormat.format(state.product!!.price )}"
+
+                        }
                     )
                 }
             }

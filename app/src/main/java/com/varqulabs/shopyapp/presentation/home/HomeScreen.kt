@@ -1,5 +1,6 @@
 package com.varqulabs.shopyapp.presentation.home
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -7,6 +8,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -38,6 +41,7 @@ import com.varqulabs.shopyapp.navigation.Screen
 import com.varqulabs.shopyapp.presentation.home.components.ProductCardItem
 import com.varqulabs.shopyapp.presentation.home.components.WelcomeBar
 
+@SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(
     onItemClick: (String) -> Unit,
@@ -70,72 +74,93 @@ fun HomeScreen(
 
     ) {
         if(state.isLoading){
-            Box(
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(it),
-                contentAlignment = Alignment.Center
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally
             ){
-                CircularProgressIndicator()
+                WelcomeBar()
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(600.dp),
+                    contentAlignment = Alignment.Center
+                ){
+                    CircularProgressIndicator()
+                }
             }
         } else {
-            if(state.products.isEmpty()){
-                if(state.errorMsg == null){
+            if (state.products.isEmpty()) {
+                if (state.errorMsg == null) {
                     systemUiController.setStatusBarColor(Color.Black)
-                    ErrorContent(
-                        exceptionType = "Internet Connection | Server",
-                        exceptionImage = R.drawable.not_found,
-                        reload = {
-                            viewModel.getAllProducts()
-                        }
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        WelcomeBar()
+                        ErrorContent(
+                            exceptionType = "Internet Connection",
+                            exceptionImage = R.drawable.no_interet,
+                            reload = {
+                                viewModel.getAllProductsAlpha()
+                            }
+                        )
+                    }
                 } else {
                     systemUiController.setStatusBarColor(Color.Black)
-                    ErrorContent(
-                        exceptionType = "Internet Connection",
-                        exceptionImage = R.drawable.no_interet,
-                        reload = {
-                            viewModel.getAllProducts()
-                        }
-                    )
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        WelcomeBar()
+                        ErrorContent(
+                            exceptionType = "Internet Connection",
+                            exceptionImage = R.drawable.no_interet,
+                            reload = {
+                                viewModel.getAllProductsAlpha()
+                            }
+                        )
+                    }
                 }
             } else {
-                Column(modifier = Modifier){
+                Column(modifier = Modifier) {
 
-                        //WelcomeBar()
-                        LazyVerticalGrid(
-                            columns = GridCells.Fixed(2),
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(bottom = 12.dp),
-                            contentPadding = PaddingValues(0.dp),
-                            horizontalArrangement = Arrangement.spacedBy(12.dp),
-                            verticalArrangement = Arrangement.spacedBy(12.dp)
-                        ){
-                            item(
-                                span = {
-                                    GridItemSpan(2)
-                                }
-                            ){
-                                WelcomeBar()
+                    //WelcomeBar()
+                    LazyVerticalGrid(
+                        columns = GridCells.Fixed(2),
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(bottom = 12.dp),
+                        contentPadding = PaddingValues(0.dp),
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        verticalArrangement = Arrangement.spacedBy(12.dp)
+                    ) {
+                        item(
+                            span = {
+                                GridItemSpan(2)
                             }
-                            items(
-                                items = state.products,
-                                key = { producto : Product -> producto.id }
-                            ){product ->
-                                ProductCardItem(
-                                    product = product,
-                                    onClick = { onItemClick(product.id) }
-                                )
-
-                            }
+                        ) {
+                            WelcomeBar()
                         }
+                        items(
+                            items = state.products,
+                            key = { producto: Product -> producto.id }
+                        ) { product ->
+                            ProductCardItem(
+                                product = product,
+                                onClick = { onItemClick(product.id) }
+                            )
+
+                        }
+                    }
 
                 }
 
             }
-        }
 
+        }
 
     }
 

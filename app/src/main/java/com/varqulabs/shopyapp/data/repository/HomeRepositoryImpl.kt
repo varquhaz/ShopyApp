@@ -1,5 +1,6 @@
 package com.varqulabs.shopyapp.data.repository
 
+import android.util.Log
 import com.varqulabs.shopyapp.data.local.HomeDao
 import com.varqulabs.shopyapp.data.mapper.toDomain
 import com.varqulabs.shopyapp.data.mapper.toEntity
@@ -40,7 +41,7 @@ class HomeRepositoryImpl(
         }
     }
 
-    fun getAllProductsAlpha(): Flow<List<Product>>{
+    override fun getAllProductsAlpha(): Flow<List<Product>>{
         val localFlow = dao.getAllProducts().map {
             it.map { it.toDomain() }
         }
@@ -48,6 +49,31 @@ class HomeRepositoryImpl(
 
         return localFlow.combine(apiFlow){ db, _ ->
             db
+        }
+    }
+
+    override fun getProductDetailAlpha(id: String): Flow<Product> {
+        return flow {
+            try {
+                val result = dao.getProductById(id)
+                val resultMapped = result.toDomain()
+                emit(resultMapped)
+            } catch (e: Exception){
+                println(e)
+                Log.d("getDetailException", "$e")
+                emit(
+                    Product(
+                        "405",
+                        "No name",
+                        "No description",
+                        "404",
+                        price = 405.0,
+                        ratingCount = 404,
+                        ratingScore = 4.04,
+                        imageUrl = ""
+                    )
+                )
+            }
         }
     }
 
@@ -97,7 +123,7 @@ class HomeRepositoryImpl(
 
     override suspend fun insertProducts(products: List<Product>) {
         products.forEach {
-            dao.insertProduct(it.toEntity())
+            dao.upsertProduct(it.toEntity())
         }
     }
 }

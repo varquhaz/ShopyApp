@@ -46,6 +46,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.varqulabs.shopyapp.R
 import com.varqulabs.shopyapp.core.presentation.components.RatingBar
+import com.varqulabs.shopyapp.core.presentation.util.errorDrawable
 import com.varqulabs.shopyapp.domain.model.Product
 import java.text.NumberFormat
 
@@ -60,7 +61,7 @@ fun ProductCardItem(
     numberFormat.minimumFractionDigits = 2
     numberFormat.isGroupingUsed = true
 
-        Column(
+    Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(260.dp)
@@ -73,8 +74,8 @@ fun ProductCardItem(
             AsyncImage(
                 model = product.imageUrl,
                 contentDescription = "Product Image",
-                error = painterResource(id = R.drawable.ic_launcher_foreground),
-                placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
+                error = painterResource(id = errorDrawable(product.category)),
+                placeholder = painterResource(id = errorDrawable(product.category)),
                 modifier = Modifier
                     .padding(vertical = 24.dp)
                     .size(110.dp)
