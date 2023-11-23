@@ -31,6 +31,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.varqulabs.shopyapp.R
+import com.varqulabs.shopyapp.core.presentation.components.ErrorContent
 import com.varqulabs.shopyapp.domain.model.Product
 import com.varqulabs.shopyapp.navigation.Screen
 import com.varqulabs.shopyapp.presentation.home.components.ProductCardItem
@@ -79,10 +81,22 @@ fun HomeScreen(
         } else {
             if(state.products.isEmpty()){
                 if(state.errorMsg == null){
-                    Text("Hubo un error inesperado")
+                    systemUiController.setStatusBarColor(Color.Black)
+                    ErrorContent(
+                        exceptionType = "Internet Connection | Server",
+                        exceptionImage = R.drawable.not_found,
+                        reload = {
+                            viewModel.getAllProducts()
+                        }
+                    )
                 } else {
-                    Text(
-                        text = state.errorMsg
+                    systemUiController.setStatusBarColor(Color.Black)
+                    ErrorContent(
+                        exceptionType = "Internet Connection",
+                        exceptionImage = R.drawable.no_interet,
+                        reload = {
+                            viewModel.getAllProducts()
+                        }
                     )
                 }
             } else {

@@ -26,7 +26,7 @@ class HomeViewModel @Inject constructor(
         getAllProducts()
     }
 
-    private fun getAllProducts(){
+    fun getAllProducts(){
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             homeUseCases.getAllProductsUseCase().collectLatest {

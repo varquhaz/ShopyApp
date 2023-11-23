@@ -47,12 +47,18 @@ import coil.compose.AsyncImage
 import com.varqulabs.shopyapp.R
 import com.varqulabs.shopyapp.core.presentation.components.RatingBar
 import com.varqulabs.shopyapp.domain.model.Product
+import java.text.NumberFormat
 
 @Composable
 fun ProductCardItem(
     product: Product,
     onClick: (String) -> Unit
 ) {
+
+    val numberFormat = NumberFormat.getInstance()
+    numberFormat.maximumFractionDigits = 2
+    numberFormat.minimumFractionDigits = 2
+    numberFormat.isGroupingUsed = true
 
         Column(
             modifier = Modifier
@@ -99,7 +105,7 @@ fun ProductCardItem(
                     )
                 }
                 Text(
-                    text = "$${product.price}",
+                    text = "$${numberFormat.format(product.price)}",
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Black,
                     modifier = Modifier.padding(vertical = 4.dp),

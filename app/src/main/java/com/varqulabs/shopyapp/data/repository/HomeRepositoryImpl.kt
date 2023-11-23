@@ -1,24 +1,36 @@
 package com.varqulabs.shopyapp.data.repository
 
+import com.varqulabs.shopyapp.data.local.HomeDao
 import com.varqulabs.shopyapp.data.mapper.toDomain
+import com.varqulabs.shopyapp.data.mapper.toEntity
 import com.varqulabs.shopyapp.data.remote.FakeStoreApi
 import com.varqulabs.shopyapp.data.remote.util.resultOf
 import com.varqulabs.shopyapp.domain.model.Product
 import com.varqulabs.shopyapp.domain.repository.HomeRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
 import java.util.concurrent.CancellationException
 
 
 class HomeRepositoryImpl(
+    private val dao: HomeDao,
     private val api: FakeStoreApi
 ) : HomeRepository {
     override fun getAllProducts(): Flow<Result<List<Product>>> {
         return flow {
             try {
+                val result1 = dao.getAllProducts()
+                val result1Mapped = result1.map {
+                    it.map { it.toDomain() }
+                }
                 val result = api.getAllProducts()
-                val resultMapped = result.map { it.toDomain() }
+                val resultMapped = result.map {
+                    it.toDomain()
+                }
+                insertProducts(resultMapped)
                 emit(Result.success(resultMapped))
             } catch (e: Exception) {
                 emit(Result.failure(e))
@@ -26,9 +38,35 @@ class HomeRepositoryImpl(
         }.onStart {
             emit(Result.success(emptyList()))
         }
-
-
     }
+
+    fun getAllProductsAlpha(): Flow<List<Product>>{
+        val localFlow = dao.getAllProducts().map {
+            it.map { it.toDomain() }
+        }
+        val apiFlow = getProductsFromApi()
+
+        return localFlow.combine(apiFlow){ db, _ ->
+            db
+        }
+    }
+
+    private fun getProductsFromApi(): Flow<List<Product>> {
+        return flow {
+            resultOf {
+                val products = api.getAllProducts().map {
+                    it.toDomain()
+                }
+                insertProducts(products = products)
+            }
+            emit(emptyList<Product>())
+        }.onStart {
+            emit(emptyList())
+        }
+    }
+
+
+
 
     override fun getProductDetail(id: Int): Flow<Result<Product>> {
         return flow {
@@ -54,6 +92,12 @@ class HomeRepositoryImpl(
                     )
                 )
             )
+        }
+    }
+
+    override suspend fun insertProducts(products: List<Product>) {
+        products.forEach {
+            dao.insertProduct(it.toEntity())
         }
     }
 }
