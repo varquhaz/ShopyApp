@@ -2,8 +2,6 @@ package com.varqulabs.shopyapp.data.local.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.squareup.moshi.Json
-import com.varqulabs.shopyapp.data.remote.dto.Rating
 
 @Entity
 data class ProductEntity(

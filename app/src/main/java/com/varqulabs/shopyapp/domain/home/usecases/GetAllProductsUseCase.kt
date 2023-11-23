@@ -7,7 +7,8 @@ import kotlinx.coroutines.flow.Flow
 class GetAllProductsUseCase(
     private val repository: HomeRepository
 ) {
-    operator fun invoke(): Flow<Result<List<Product>>>{
+
+    operator fun invoke(): Flow<List<Product>> {
         return repository.getAllProducts()
     }
 

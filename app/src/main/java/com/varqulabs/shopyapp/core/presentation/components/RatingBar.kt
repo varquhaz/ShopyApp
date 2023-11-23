@@ -1,6 +1,5 @@
 package com.varqulabs.shopyapp.core.presentation.components
 
-import android.content.Context
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height

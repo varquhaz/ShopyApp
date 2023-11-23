@@ -1,19 +1,14 @@
 package com.varqulabs.shopyapp.domain.repository
 
-import com.varqulabs.shopyapp.data.remote.dto.StoreProductDto
 import com.varqulabs.shopyapp.domain.model.Product
 import kotlinx.coroutines.flow.Flow
 
 interface HomeRepository {
 
-    fun getAllProducts() : Flow<Result<List<Product>>>
+    fun getAllProducts(): Flow<List<Product>>
 
-    fun getProductDetail(id: Int): Flow<Result<Product>>
+    fun getProductDetail(id: String): Flow<Product>
 
     suspend fun insertProducts(products: List<Product>)
-
-    fun getAllProductsAlpha(): Flow<List<Product>>
-
-    fun getProductDetailAlpha(id: String): Flow<Product>
 
 }

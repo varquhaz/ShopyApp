@@ -1,17 +1,15 @@
 package com.varqulabs.shopyapp.presentation.detail
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Share
@@ -24,15 +22,10 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Shapes
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -54,12 +47,11 @@ import com.varqulabs.shopyapp.core.presentation.util.shareLink
 import com.varqulabs.shopyapp.domain.model.Product
 import com.varqulabs.shopyapp.presentation.detail.components.BottomSelectorDetail
 import java.text.NumberFormat
-import kotlin.math.max
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetailScreen(
-    onBack:() -> Unit,
+    onBack: () -> Unit,
     viewModel: DetailViewModel = hiltViewModel()
 ) {
 
@@ -72,20 +64,15 @@ fun DetailScreen(
     numberFormat.minimumFractionDigits = 2
     numberFormat.isGroupingUsed = true
 
-    // Remember a SystemUiController
+    // Change StatusBar Colors
     val systemUiController = rememberSystemUiController()
     val useDarkIcons = true
 
     DisposableEffect(systemUiController, useDarkIcons) {
-        // Update all of the system bar colors to be transparent, and use
-        // dark icons if we're in light theme
         systemUiController.setSystemBarsColor(
             color = Color.Transparent,
             darkIcons = useDarkIcons
         )
-
-        // setStatusBarColor() and setNavigationBarColor() also exist
-
         onDispose {}
     }
 
@@ -112,7 +99,13 @@ fun DetailScreen(
                     }
                 },
                 actions = {
-                    IconButton(onClick = { /*TODO*/ }) {
+                    IconButton(onClick = {
+                        if (state.product != null) {
+                            context.shareLink(
+                                "${state.product!!.name} \n ${state.product!!.imageUrl}"
+                            )
+                        }
+                    }) {
                         Icon(
                             imageVector = Icons.Default.Share,
                             contentDescription = "Share",
@@ -127,44 +120,37 @@ fun DetailScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                          if(state.product != null){
-                              context.shareLink(
-                                  "Estoy interesado en: \n ${state.product!!.name} \n ${state.product!!.imageUrl}"
-                              )
-                          }
+                    if (state.product != null) {
+                        context.shareLink(
+                            "Estoy interesado en: \n ${state.product!!.name} \n ${state.product!!.imageUrl}"
+                        )
+                    }
                 },
                 shape = Shapes().large,
                 containerColor = MaterialTheme.colorScheme.primary
             ) {
 
-                    Icon(
-                        imageVector = Icons.Default.ShoppingCart,
-                        contentDescription = "Shop"
-                    )
+                Icon(
+                    imageVector = Icons.Default.ShoppingCart,
+                    contentDescription = "Shop"
+                )
             }
         }
     ) {
         Column(
             modifier = Modifier.padding(it)
-        ){
-            /*Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = "Demo",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(360.dp)
-            )*/
-            if(state.isLoading == true){
+        ) {
+            if (state.isLoading) {
                 Box(
                     modifier = Modifier.fillMaxWidth(),
                     contentAlignment = Alignment.Center
-                ){
+                ) {
                     CircularProgressIndicator()
                 }
             } else {
-                if(state.product?.imageUrl == null){
+                if (state.product?.imageUrl == null) {
                     Button(onClick = {
-                        viewModel.getProductDetailAlpha()
+                        viewModel.getProductDetail()
                     }) {
                         Text("Reload")
                     }
@@ -198,17 +184,19 @@ fun DetailScreen(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
-            ){
-                OutlinedButton(
-                    onClick = { /*TODO*/ },
-                    modifier = Modifier.width(240.dp),
-                    shape = Shapes().small
+            ) {
+                Box(
+                    modifier = Modifier
+                        .width(240.dp)
+                        .border(1.dp, Color.Black, shape = RoundedCornerShape(12.dp))
+                        .padding(vertical = 12.dp),
+                    contentAlignment = Alignment.Center
                 ) {
                     Text(
-                        text = if(state.product == null) {
+                        text = if (state.product == null) {
                             "Price Null"
-                        }else {
-                            "Price: $${numberFormat.format(state.product!!.price )}"
+                        } else {
+                            "Price: $${numberFormat.format(state.product!!.price)}"
 
                         }
                     )

@@ -59,6 +59,7 @@ fun ShopyAppTheme(
         SideEffect {
             val window = (view.context as Activity).window
             window.statusBarColor = Color.Transparent.toArgb()
+            //window.statusBarColor = colorScheme.primary.toArgb()
             window.navigationBarColor = Color.Black.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }

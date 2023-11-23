@@ -8,7 +8,7 @@ class GetProductDetailUseCase(
     private val repository: HomeRepository
 ) {
 
-    operator fun invoke(id: Int): Flow<Result<Product>>{
+    operator fun invoke(id: String): Flow<Product> {
         return repository.getProductDetail(id)
     }
 

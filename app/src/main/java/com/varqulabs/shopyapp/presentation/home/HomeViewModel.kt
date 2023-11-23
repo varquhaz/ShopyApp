@@ -6,10 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.varqulabs.shopyapp.domain.home.HomeUseCases
-import com.varqulabs.shopyapp.domain.home.usecases.GetAllProductsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -23,31 +20,13 @@ class HomeViewModel @Inject constructor(
         private set
 
     init{
-        getAllProductsAlpha()
+        getAllProducts()
     }
 
     fun getAllProducts(){
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             homeUseCases.getAllProductsUseCase().collectLatest {
-                it.onSuccess {
-                    state = state.copy(
-                        products = it
-                    )
-                }.onFailure {
-                    state = state.copy(
-                        errorMsg = it.message
-                    )
-                }
-            }
-            state = state.copy(isLoading = false)
-        }
-    }
-
-    fun getAllProductsAlpha(){
-        viewModelScope.launch {
-            state = state.copy(isLoading = true)
-            homeUseCases.getAllProductsAlpha().collectLatest {
                 state = state.copy(
                     products = it
                 )

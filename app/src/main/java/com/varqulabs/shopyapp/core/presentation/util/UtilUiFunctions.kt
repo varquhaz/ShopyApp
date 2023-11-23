@@ -2,8 +2,11 @@ package com.varqulabs.shopyapp.core.presentation.util
 
 import android.content.Context
 import android.content.Intent
-import androidx.annotation.DrawableRes
+import androidx.compose.foundation.interaction.Interaction
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import com.varqulabs.shopyapp.R
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
 fun String.replaceFirstChar(transform: (Char) -> CharSequence)
         : String {
@@ -12,6 +15,16 @@ fun String.replaceFirstChar(transform: (Char) -> CharSequence)
         transform(this[0]).toString() + substring(1)
     else
         this
+}
+
+// fun Hide onClick Ripple Effect :
+class NoRippleInteractionSource : MutableInteractionSource {
+
+    override val interactions: Flow<Interaction> = emptyFlow()
+
+    override suspend fun emit(interaction: Interaction) {}
+
+    override fun tryEmit(interaction: Interaction) = true
 }
 
 fun errorDrawable(category: String): Int{

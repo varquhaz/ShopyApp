@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.varqulabs.shopyapp.R
@@ -28,7 +27,6 @@ fun ErrorContent(
     @DrawableRes exceptionImage: Int = R.drawable.ic_launcher_foreground,
     reload: () -> Unit
 ) {
-
         Box(
           modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
@@ -46,20 +44,20 @@ fun ErrorContent(
                 )
                 Text(
                     text = "Looks like you don't have...",
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.Gray,
                 )
                 Text(
                     text = exceptionType,
-                    fontSize = 18.sp,
+                    fontSize = 16.sp,
                     fontWeight = FontWeight.Medium,
                     color = Color.Gray,
                 )
                 Image(
                     painter = painterResource(id = exceptionImage),
                     contentDescription = "Error Image",
-                    modifier = Modifier.size(200.dp)
+                    modifier = Modifier.size(160.dp)
                 )
                 OutlinedButton(onClick = { reload() }) {
                     Text(

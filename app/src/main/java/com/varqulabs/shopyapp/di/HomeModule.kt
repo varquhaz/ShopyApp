@@ -8,10 +8,8 @@ import com.varqulabs.shopyapp.data.remote.FakeStoreApi
 import com.varqulabs.shopyapp.data.remote.util.Constants
 import com.varqulabs.shopyapp.data.repository.HomeRepositoryImpl
 import com.varqulabs.shopyapp.domain.detail.DetailUseCases
-import com.varqulabs.shopyapp.domain.detail.usecases.GetProductDetailAlphaUseCase
 import com.varqulabs.shopyapp.domain.detail.usecases.GetProductDetailUseCase
 import com.varqulabs.shopyapp.domain.home.HomeUseCases
-import com.varqulabs.shopyapp.domain.home.usecases.GetAllProductsAlpha
 import com.varqulabs.shopyapp.domain.home.usecases.GetAllProductsUseCase
 import com.varqulabs.shopyapp.domain.repository.HomeRepository
 import dagger.Module
@@ -57,7 +55,6 @@ object HomeModule {
     ) : HomeUseCases {
         return HomeUseCases(
             getAllProductsUseCase = GetAllProductsUseCase(repository),
-            getAllProductsAlpha = GetAllProductsAlpha(repository)
         )
     }
 
@@ -68,8 +65,7 @@ object HomeModule {
         repository: HomeRepository
     ): DetailUseCases{
         return DetailUseCases(
-            getProductDetailUseCase = GetProductDetailUseCase(repository),
-            getProductDetailAlphaUseCase = GetProductDetailAlphaUseCase(repository)
+            getProductDetailUseCase = GetProductDetailUseCase(repository)
         )
     }
 
