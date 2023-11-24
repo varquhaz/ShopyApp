@@ -1,5 +1,9 @@
 package com.varqulabs.shopyapp.presentation.home
 
 sealed class HomeEvent {
-    object ReloadNetwork : HomeEvent()
+    data object ReloadNetwork : HomeEvent()
+    data object Dismiss : HomeEvent()
+    data class SortByFilter(val sortFilter: String) : HomeEvent()
+    data class FilterByCategory(val category: String) : HomeEvent()
+
 }

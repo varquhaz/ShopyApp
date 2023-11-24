@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,6 +27,8 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.varqulabs.shopyapp.R
 import com.varqulabs.shopyapp.core.presentation.components.ErrorContent
 import com.varqulabs.shopyapp.domain.model.Product
+import com.varqulabs.shopyapp.presentation.home.components.DropDownFilter
+import com.varqulabs.shopyapp.presentation.home.components.FilterCategoryRow
 import com.varqulabs.shopyapp.presentation.home.components.ProductCardItem
 import com.varqulabs.shopyapp.presentation.home.components.WelcomeBar
 
@@ -98,6 +101,26 @@ fun HomeScreen(
                             ) {
                                 WelcomeBar("Juanjo")
                             }
+                            item(
+                                span = {
+                                    GridItemSpan(2)
+                                }
+                            ) {
+                                Row(
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically) {
+                                    FilterCategoryRow(
+                                        categorySelected = {
+                                            viewModel.onEvent(HomeEvent.FilterByCategory(it))
+                                        }
+                                    )
+                                    DropDownFilter(
+                                        sortFilter = {
+                                            viewModel.onEvent(HomeEvent.SortByFilter(it))
+                                        }
+                                    )
+                                }
+                            }
                             items(
                                 items = state.products,
                                 key = { producto: Product -> producto.id }
@@ -115,3 +138,4 @@ fun HomeScreen(
         }
     }
 }
+

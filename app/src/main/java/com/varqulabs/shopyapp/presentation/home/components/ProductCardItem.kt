@@ -16,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -25,8 +24,6 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.varqulabs.shopyapp.core.presentation.components.RatingBar
 import com.varqulabs.shopyapp.domain.model.Product
-import com.varqulabs.shopyapp.presentation.home.util.errorDrawable
-import java.text.NumberFormat
 
 @Composable
 fun ProductCardItem(
@@ -47,8 +44,6 @@ fun ProductCardItem(
             AsyncImage(
                 model = product.imageUrl,
                 contentDescription = "Product Image",
-                //error = painterResource(id = errorDrawable(product.category)),
-                //placeholder = painterResource(id = errorDrawable(product.category)),
                 modifier = Modifier
                     .padding(vertical = 24.dp)
                     .size(110.dp)
@@ -79,7 +74,6 @@ fun ProductCardItem(
                     )
                 }
                 Text(
-                    //text = "$${numberFormat.format(product.price)}",
                     text = String.format("%.2f", product.price),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Black,
