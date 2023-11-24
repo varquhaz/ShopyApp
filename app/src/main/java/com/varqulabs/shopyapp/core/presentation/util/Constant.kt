@@ -1,4 +1,4 @@
-package com.varqulabs.shopyapp.utils
+package com.varqulabs.shopyapp.core.presentation.util
 
 object Constants {
 

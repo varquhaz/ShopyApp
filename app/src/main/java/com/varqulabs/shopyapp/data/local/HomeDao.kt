@@ -20,11 +20,8 @@ interface HomeDao {
     @Upsert
     suspend fun upsertProduct(product: ProductEntity)
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertProduct(product: ProductEntity)
-
     @Query("SELECT * FROM ProductEntity WHERE id = :id")
-    fun getProductById(id: String): ProductEntity
+    suspend fun getProductById(id: String): ProductEntity
 
 
 

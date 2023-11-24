@@ -53,16 +53,12 @@ fun HomeScreen(
         onDispose {}
     }
 
-    Scaffold(
-
-    ) {
-        if(state.isLoading){
-            Column(
-                modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ){
-                WelcomeBar()
+    Scaffold(modifier = Modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ){
+            if(state.isLoading){
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -71,69 +67,47 @@ fun HomeScreen(
                 ){
                     CircularProgressIndicator()
                 }
-            }
-        } else {
-            if (state.products.isEmpty()) {
-                if (state.errorMsg == null) {
+            } else {
+                if (state.products.isEmpty()) {
                     systemUiController.setStatusBarColor(Color.Black)
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        WelcomeBar()
+                    Column(){
+                        WelcomeBar(username = "Username")
                         ErrorContent(
                             exceptionType = "Internet Connection",
                             exceptionImage = R.drawable.no_interet,
                             reload = {
-                                viewModel.getAllProducts()
+                                viewModel.onEvent(HomeEvent.ReloadNetwork)
                             }
                         )
                     }
                 } else {
-                    systemUiController.setStatusBarColor(Color.Black)
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        WelcomeBar()
-                        ErrorContent(
-                            exceptionType = "Internet Connection",
-                            exceptionImage = R.drawable.no_interet,
-                            reload = {
-                                viewModel.getAllProducts()
-                            }
-                        )
-                    }
-                }
-            } else {
-                Column(modifier = Modifier) {
-                    LazyVerticalGrid(
-                        columns = GridCells.Fixed(2),
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(bottom = 12.dp),
-                        contentPadding = PaddingValues(0.dp),
-                        horizontalArrangement = Arrangement.spacedBy(12.dp),
-                        verticalArrangement = Arrangement.spacedBy(12.dp)
-                    ) {
-                        item(
-                            span = {
-                                GridItemSpan(2)
-                            }
+                    Column() {
+                        LazyVerticalGrid(
+                            columns = GridCells.Fixed(2),
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(bottom = 12.dp),
+                            contentPadding = PaddingValues(0.dp),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp),
+                            verticalArrangement = Arrangement.spacedBy(12.dp)
                         ) {
-                            WelcomeBar()
-                        }
-                        items(
-                            items = state.products,
-                            key = { producto: Product -> producto.id }
-                        ) { product ->
-                            ProductCardItem(
-                                product = product,
-                                onClick = { onItemClick(product.id) }
-                            )
+                            item(
+                                span = {
+                                    GridItemSpan(2)
+                                }
+                            ) {
+                                WelcomeBar("Juanjo")
+                            }
+                            items(
+                                items = state.products,
+                                key = { producto: Product -> producto.id }
+                            ) { product ->
+                                ProductCardItem(
+                                    product = product,
+                                    onClick = { onItemClick(product.id) }
+                                )
 
+                            }
                         }
                     }
                 }

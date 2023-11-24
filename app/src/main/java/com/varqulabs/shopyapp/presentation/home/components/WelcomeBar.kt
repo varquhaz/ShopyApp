@@ -17,7 +17,7 @@ import com.varqulabs.shopyapp.R
 
 @Composable
 fun WelcomeBar(
-
+    username: String
 ) {
     Box(
        modifier = Modifier.fillMaxWidth(),
@@ -32,7 +32,7 @@ fun WelcomeBar(
             modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 90.dp)
         ){
             Text(
-              text = "Hi JuanJo,",
+              text = "Hi $username,",
                 fontSize = 28.sp,
                 fontWeight = FontWeight.ExtraBold,
                 color = Color.White,

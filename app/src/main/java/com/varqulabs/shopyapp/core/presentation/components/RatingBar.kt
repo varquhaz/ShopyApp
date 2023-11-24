@@ -24,8 +24,8 @@ import com.varqulabs.shopyapp.R
 //https://stackoverflow.com/questions/73948960/jetpack-compose-how-to-create-a-rating-bar
 @Composable
 fun RatingBar(
-    modifier: Modifier = Modifier,
     rating: Float,
+    modifier: Modifier = Modifier,
     spaceBetween: Dp = 0.dp,
     @DrawableRes imageFilled: Int = R.drawable.star1,
     @DrawableRes imageOutlined: Int = R.drawable.star_outline1,

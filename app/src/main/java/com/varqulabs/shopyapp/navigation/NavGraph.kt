@@ -12,42 +12,25 @@ import kotlinx.coroutines.flow.SharingStarted
 @Composable
 fun SetupNavGraph(
     navHostController: NavHostController,
-    startDestination: Screen
+    startDestination: Screen = Screen.Home
 ) {
     NavHost(
         navController = navHostController,
         startDestination = startDestination.route
     ) {
-        homeRoute(
-            onItemClick = { idProduct ->
-                navHostController.navigate(Screen.Detail.passProductId(idProduct))
-            }
-        )
-        detailRoute(
-            onBack = {
-                navHostController.navigate(Screen.Home.route)
-            }
-        )
-    }
-
-}
-
-fun NavGraphBuilder.homeRoute(
-    onItemClick: (String) -> Unit
-){
-    composable(route = Screen.Home.route){
-        HomeScreen(
-            onItemClick = onItemClick
-        )
-    }
-}
-
-fun NavGraphBuilder.detailRoute(
-    onBack: () -> Unit
-){
-    composable(route = Screen.Detail.route){
-        DetailScreen(
-            onBack = onBack
-        )
+        composable(route = Screen.Home.route) {
+            HomeScreen(
+                onItemClick = { idProduct ->
+                    navHostController.navigate(Screen.Detail.passProductId(idProduct))
+                }
+            )
+        }
+        composable(route = Screen.Detail.route) {
+            DetailScreen(
+                onBack = {
+                    navHostController.navigate(Screen.Home.route)
+                }
+            )
+        }
     }
 }

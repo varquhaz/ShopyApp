@@ -7,8 +7,6 @@ interface HomeRepository {
 
     fun getAllProducts(): Flow<List<Product>>
 
-    fun getProductDetail(id: String): Flow<Product>
-
-    suspend fun insertProducts(products: List<Product>)
+    suspend fun getProductDetail(id: String): Result<Product>
 
 }

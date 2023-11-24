@@ -17,6 +17,10 @@ fun StoreProductDto.toDomain(): Product {
     )
 }
 
+fun List<ProductEntity>.toDomain(): List<Product> {
+    return map { it.toDomain() }
+}
+
 fun Product.toEntity(): ProductEntity{
     return ProductEntity(
         id = this.id,

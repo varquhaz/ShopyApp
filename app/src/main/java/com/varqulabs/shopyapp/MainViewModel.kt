@@ -8,18 +8,3 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-class MainViewModel(
-
-) : ViewModel(){
-
-    //DelayLoading
-    var splashLoading by mutableStateOf(true)
-        private set
-
-    fun checkLoading(){
-        viewModelScope.launch {
-            delay(800)
-            splashLoading = false
-        }
-    }
-}

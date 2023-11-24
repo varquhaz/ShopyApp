@@ -1,5 +1,6 @@
 package com.varqulabs.shopyapp.presentation.home
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -23,17 +24,26 @@ class HomeViewModel @Inject constructor(
         getAllProducts()
     }
 
-    fun getAllProducts(){
+    private fun getAllProducts(){
         viewModelScope.launch {
             state = state.copy(isLoading = true)
             homeUseCases.getAllProductsUseCase().collectLatest {
                 state = state.copy(
-                    products = it
+                    products = it,
+                    isLoading = false
                 )
-                state = state.copy(isLoading = false)
             }
-
         }
+    }
+
+    fun onEvent(event:HomeEvent){
+
+        when(event){
+            is HomeEvent.ReloadNetwork -> {
+                getAllProducts()
+            }
+        }
+
     }
 
 

@@ -43,9 +43,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import coil.compose.AsyncImage
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.varqulabs.shopyapp.R
-import com.varqulabs.shopyapp.core.presentation.util.shareLink
 import com.varqulabs.shopyapp.domain.model.Product
 import com.varqulabs.shopyapp.presentation.detail.components.BottomSelectorDetail
+import com.varqulabs.shopyapp.presentation.detail.util.shareLink
 import java.text.NumberFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -58,11 +58,6 @@ fun DetailScreen(
     val state by viewModel.state.collectAsState()
 
     val context = LocalContext.current
-
-    val numberFormat = NumberFormat.getInstance()
-    numberFormat.maximumFractionDigits = 2
-    numberFormat.minimumFractionDigits = 2
-    numberFormat.isGroupingUsed = true
 
     // Change StatusBar Colors
     val systemUiController = rememberSystemUiController()
@@ -148,18 +143,11 @@ fun DetailScreen(
                     CircularProgressIndicator()
                 }
             } else {
-                if (state.product?.imageUrl == null) {
-                    Button(onClick = {
-                        viewModel.getProductDetail()
-                    }) {
-                        Text("Reload")
-                    }
-                }
                 AsyncImage(
                     model = state.product?.imageUrl,
                     contentDescription = "Product Image",
-                    error = painterResource(id = R.drawable.ic_launcher_foreground),
-                    placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
+                    //error = painterResource(id = R.drawable.ic_launcher_foreground),
+                    //placeholder = painterResource(id = R.drawable.ic_launcher_foreground),
                     modifier = Modifier
                         .fillMaxWidth()
                         .size(360.dp)
@@ -196,8 +184,7 @@ fun DetailScreen(
                         text = if (state.product == null) {
                             "Price Null"
                         } else {
-                            "Price: $${numberFormat.format(state.product!!.price)}"
-
+                            "Price: $ ${String.format("%.2f", state.product!!.price)}"
                         }
                     )
                 }

@@ -1,6 +1,5 @@
 package com.varqulabs.shopyapp.data.repository
 
-import android.util.Log
 import com.varqulabs.shopyapp.data.local.HomeDao
 import com.varqulabs.shopyapp.data.mapper.toDomain
 import com.varqulabs.shopyapp.data.mapper.toEntity
@@ -18,7 +17,7 @@ class HomeRepositoryImpl(
     private val dao: HomeDao,
     private val api: FakeStoreApi
 ) : HomeRepository {
-    override fun getAllProducts(): Flow<List<Product>>{
+    override fun getAllProducts(): Flow<List<Product>> {
         val localFlow = dao.getAllProducts().map {
             it.map { it.toDomain() }
         }
@@ -29,29 +28,14 @@ class HomeRepositoryImpl(
         }
     }
 
-    override fun getProductDetail(id: String): Flow<Product> {
-        return flow {
-            try {
+    override suspend fun getProductDetail(id: String): Result<Product> {
+        return try {
                 val result = dao.getProductById(id)
                 val resultMapped = result.toDomain()
-                emit(resultMapped)
+                Result.success(resultMapped)
             } catch (e: Exception){
-                println(e)
-                Log.d("getDetailException", "$e")
-                emit(
-                    Product(
-                        "405",
-                        "No name",
-                        "No description",
-                        "404",
-                        price = 405.0,
-                        ratingCount = 404,
-                        ratingScore = 4.04,
-                        imageUrl = ""
-                    )
-                )
+                Result.failure(e)
             }
-        }
     }
 
     private fun getProductsFromApi(): Flow<List<Product>> {
@@ -68,7 +52,7 @@ class HomeRepositoryImpl(
         }
     }
 
-    override suspend fun insertProducts(products: List<Product>) {
+    private suspend fun insertProducts(products: List<Product>) {
         products.forEach {
             dao.upsertProduct(it.toEntity())
         }

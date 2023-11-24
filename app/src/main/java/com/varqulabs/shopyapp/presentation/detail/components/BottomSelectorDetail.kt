@@ -21,9 +21,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.varqulabs.shopyapp.R
 import com.varqulabs.shopyapp.core.presentation.components.RatingBar
-import com.varqulabs.shopyapp.core.presentation.util.NoRippleInteractionSource
-import com.varqulabs.shopyapp.core.presentation.util.replaceFirstChar
 import com.varqulabs.shopyapp.domain.model.Product
+import com.varqulabs.shopyapp.presentation.detail.util.NoRippleInteractionSource
+import com.varqulabs.shopyapp.presentation.detail.util.replaceFirstChar
 import java.text.NumberFormat
 
 @Composable

@@ -24,11 +24,12 @@ import com.varqulabs.shopyapp.R
 @Composable
 fun ErrorContent(
     exceptionType: String,
+    modifier : Modifier = Modifier,
     @DrawableRes exceptionImage: Int = R.drawable.ic_launcher_foreground,
     reload: () -> Unit
 ) {
         Box(
-          modifier = Modifier.fillMaxSize(),
+          modifier = modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ){
             Column(

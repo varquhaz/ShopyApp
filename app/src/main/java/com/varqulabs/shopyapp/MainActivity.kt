@@ -22,11 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val viewModel by viewModels<MainViewModel>()
-        installSplashScreen().setKeepOnScreenCondition{
-            viewModel.splashLoading
-        }
-        viewModel.checkLoading()
+        installSplashScreen()
         WindowCompat.setDecorFitsSystemWindows(window, false)
         setContent {
             ShopyAppTheme {
@@ -37,8 +33,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val navController = rememberNavController()
                     SetupNavGraph(
-                        navHostController = navController,
-                        startDestination =  Screen.Home
+                        navHostController = navController
                     )
                 }
             }

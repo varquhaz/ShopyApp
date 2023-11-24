@@ -24,8 +24,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.varqulabs.shopyapp.core.presentation.components.RatingBar
-import com.varqulabs.shopyapp.core.presentation.util.errorDrawable
 import com.varqulabs.shopyapp.domain.model.Product
+import com.varqulabs.shopyapp.presentation.home.util.errorDrawable
 import java.text.NumberFormat
 
 @Composable
@@ -33,11 +33,6 @@ fun ProductCardItem(
     product: Product,
     onClick: (String) -> Unit
 ) {
-
-    val numberFormat = NumberFormat.getInstance()
-    numberFormat.maximumFractionDigits = 2
-    numberFormat.minimumFractionDigits = 2
-    numberFormat.isGroupingUsed = true
 
     Column(
             modifier = Modifier
@@ -52,8 +47,8 @@ fun ProductCardItem(
             AsyncImage(
                 model = product.imageUrl,
                 contentDescription = "Product Image",
-                error = painterResource(id = errorDrawable(product.category)),
-                placeholder = painterResource(id = errorDrawable(product.category)),
+                //error = painterResource(id = errorDrawable(product.category)),
+                //placeholder = painterResource(id = errorDrawable(product.category)),
                 modifier = Modifier
                     .padding(vertical = 24.dp)
                     .size(110.dp)
@@ -84,7 +79,8 @@ fun ProductCardItem(
                     )
                 }
                 Text(
-                    text = "$${numberFormat.format(product.price)}",
+                    //text = "$${numberFormat.format(product.price)}",
+                    text = String.format("%.2f", product.price),
                     fontSize = 13.sp,
                     fontWeight = FontWeight.Black,
                     modifier = Modifier.padding(vertical = 4.dp),
