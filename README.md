@@ -1,9 +1,9 @@
 # ShopyApp
 Sample E-Commerce App Using Jetpack Compose, Kotlin, Retrofit, Dagger Hilt, &amp; Clean Arquitecture.
 
-![shopyApp](https://github.com/varquhaz/ShopyApp/assets/135390925/dbaba6d6-3d7b-4b06-84a8-b9fa9b5939cd)
+https://github.com/varquhaz/ShopyApp/assets/135390925/f63ef7da-9a29-4f3c-90a7-3342644c210c
 
-![scr4](https://github.com/varquhaz/ShopyApp/assets/135390925/fe44bdc3-21c8-47f0-b6ca-312faeb71349)
-![scr1](https://github.com/varquhaz/ShopyApp/assets/135390925/7aa444d9-abec-4ae5-857f-66ccfed8512f)
-![scr2](https://github.com/varquhaz/ShopyApp/assets/135390925/b3496241-d5f3-4e57-8e38-4dc258810e7c)
-![scr3](https://github.com/varquhaz/ShopyApp/assets/135390925/f55cad5d-a8b9-450f-be13-52d533fb71d5)
+![scr1 Medium](https://github.com/varquhaz/ShopyApp/assets/135390925/e5d36249-1d5a-4cbb-86da-408ff5ce4665)
+![scr2 Medium](https://github.com/varquhaz/ShopyApp/assets/135390925/71e8d146-c0ef-48b1-aacb-5c0a6f3b92cd)
+![scr3 Medium](https://github.com/varquhaz/ShopyApp/assets/135390925/f552470d-68f9-4db1-9bbd-3feccb867054)
+![scr4 Large](https://github.com/varquhaz/ShopyApp/assets/135390925/bf00315d-c96f-4712-94fd-088762c6f9af)
