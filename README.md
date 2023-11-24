@@ -1,5 +1,6 @@
 # ShopyApp
-Sample E-Commerce App Using Jetpack Compose, Kotlin, Retrofit, Dagger Hilt, &amp; Clean Arquitecture.
+Sample E-Commerce App Using Jetpack Compose, Kotlin, Retrofit, Room, Dagger Hilt, &amp; Clean Arquitecture.
+Supports Offline Mode without Internet, via Room.
 
 https://github.com/varquhaz/ShopyApp/assets/135390925/f63ef7da-9a29-4f3c-90a7-3342644c210c
 
